@@ -1,0 +1,235 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "Documentação API de cadastro de Usuários",
+        "description": "Esta é uma API para cadastro de usuários. Desenvolvida durante o curso de NodeJS da Rocketseat",
+        "version": "1.0.0",
+        "contact": {
+            "email": "example@gmail.com"
+        }
+    },
+    "paths": {
+        "/users": {
+            "post": {
+                "tags": [
+                    "Usuário"
+                ],
+                "summary": "Cadastra um novo usuário",
+                "description": "Cadastra um novo usuário",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schema/Requests/CreateUser",
+                                "example": {
+                                    "name": "Example",
+                                    "email": "example@example.com"
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    
+                                        "$ref": "#/components/schema/Responses/User"
+                                    
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Usuário não tem permissão para realizar essa ação",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schema/Responses/GeneralError"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "get": {
+                "tags": [
+                    "Usuário"
+                ],
+                "summary": "Lista todos os usuários",
+                "description": "Lista todos os usuários",
+                "parameters": [
+                    {
+                        "in": "header",
+                        "name": "user_id",
+                        "required": true,
+                        "type": "string",
+                        "format": "uuid"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schema/Responses/User"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Usuário não tem permissão para realizar essa ação",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schema/Responses/GeneralError"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/users/{user_id}": {
+            "get": {
+                "tags": ["Usuário"],
+                "summary": "Informações do perfil do usuário",
+                "description": "Mostra as informações de um usuário",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "user_id",
+                        "required": "true",
+                        "type": "string",
+                        "format": "uuid"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schema/Responses/User"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Usuário não encontrado",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schema/Responses/GeneralError"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/users/{user_id}/admin": {
+            "patch": {
+                "tags": ["Usuário"],
+                "summary": "Transforma o usuário em Admin",
+                "description": "Transforma o usuário em Admin",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "user_id",
+                        "required": "true",
+                        "type": "string",
+                        "format": "uuid"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schema/Responses/User"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Usuário não encontrado",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schema/Responses/GeneralError"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "schema": {
+            "Responses": {
+                "User": {
+                    "type": "object",
+                    "properties": {
+                        "id": {
+                            "type": "integer",
+                            "description": "ID do usuário"
+                        },
+                        "name": {
+                            "type": "string",
+                            "description": "Nome do usuário"
+                        },
+                        "email": {
+                            "type": "string",
+                            "description": "E-mail do usuário"
+                        },
+                        "admin": {
+                            "type": "boolean",
+                            "description": "Flag que indica se usuário é tem permissão de administrador"
+                        },
+                        "created_at": {
+                            "type": "string",
+                            "description": "Data de criação do usuário"
+                        },
+                        "updated_at": {
+                            "type": "string",
+                            "description": "Data da última atualização do usuário"
+                        }
+                    }
+                },
+                "GeneralError": {
+                    "type": "object",
+                    "properties": {
+                        "error": {
+                            "type": "string",
+                            "description": "Mensagem do erro da requisição"
+                        }
+                    }
+                }
+            },
+            "Requests": {
+                "CreateUser": {
+                    "type": "object",
+                    "properties": {
+                        "name": {
+                            "type":"string",
+                            "description": "Nome do usuário"
+                        },
+                        "email": {
+                            "type": "string",
+                            "description": "E-mail do usuário"
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
